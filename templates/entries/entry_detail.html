@@ -1,0 +1,25 @@
+{% extends 'base/base.html' %}
+{% block title %}{{ entry.title }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-body">
+        <h1 class="card-title">{{ entry.title }}</h1>
+        <div class="d-flex justify-content-between text-muted mb-3">
+            <small>Создано: {{ entry.created_at|date:"d.m.Y H:i" }}</small>
+            <small>Обновлено: {{ entry.updated_at|date:"d.m.Y H:i" }}</small>
+        </div>
+        <hr>
+        <div class="content">
+            {{ entry.content|linebreaks }}
+        </div>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'entry_list' %}" class="btn btn-outline-secondary">← Назад к списку</a>
+        <div>
+            <a href="{% url 'entry_edit' entry.pk %}" class="btn btn-warning">Редактировать</a>
+            <a href="{% url 'entry_delete' entry.pk %}" class="btn btn-danger">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

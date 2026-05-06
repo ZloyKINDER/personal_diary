@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+{% block title %}Мои записи{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Мои записи</h1>
+    <a href="{% url 'entry_create' %}" class="btn btn-primary">+ Новая запись</a>
+</div>
+
+<form class="mb-4" method="GET" action="{% url 'entry_list' %}">
+    <div class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Поиск по заголовку или содержанию..." value="{{ query|default:'' }}">
+        <button type="submit" class="btn btn-outline-secondary">Найти</button>
+        {% if query %}
+            <a href="{% url 'entry_list' %}" class="btn btn-outline-danger">Сбросить</a>
+        {% endif %}
+    </div>
+</form>
+
+{% if entries %}
+    <div class="row">
+        {% for entry in entries %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ entry.title }}</h5>
+                        <p class="card-text text-muted">{{ entry.content|truncatechars:150 }}</p>
+                        <small class="text-muted">{{ entry.created_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{% url 'entry_detail' entry.pk %}" class="btn btn-sm btn-outline-primary">Читать</a>
+                        <div>
+                            <a href="{% url 'entry_edit' entry.pk %}" class="btn btn-sm btn-outline-warning">Ред.</a>
+                            <a href="{% url 'entry_delete' entry.pk %}" class="btn btn-sm btn-outline-danger">Удал.</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        {% if query %}
+            По запросу "{{ query }}" ничего не найдено.
+        {% else %}
+            У вас пока нет записей. <a href="{% url 'entry_create' %}" class="alert-link">Создайте первую!</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}
