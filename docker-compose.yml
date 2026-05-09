@@ -1,0 +1,61 @@
+services:
+  web:
+    build: .
+    container_name: personal_diary_web
+    command: >
+      sh -c "echo 'Waiting for database...' &&
+             while ! pg_isready -h db -p 5432 -U diary_user; do sleep 1; done &&
+             echo 'Database is ready!' &&
+             python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             echo 'Starting application...' &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000 --workers 3 --log-level info"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=django-insecure-test-key-12345
+      - DEBUG=True
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+      - DB_NAME=diary_db
+      - DB_USER=diary_user
+      - DB_PASSWORD=diary_password
+      - DB_HOST=db
+      - DB_PORT=5432
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - diary_network
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: personal_diary_db
+    restart: always
+    environment:
+      POSTGRES_DB: diary_db
+      POSTGRES_USER: diary_user
+      POSTGRES_PASSWORD: diary_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - diary_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U diary_user -d diary_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+networks:
+  diary_network:
+    driver: bridge

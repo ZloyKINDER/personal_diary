@@ -57,7 +57,7 @@ personal_diary/
 ├── Dockerfile          # Инструкция для сборки образа
 ├── pyproject.toml      # Зависимости Poetry
 ├── .env                # Переменные окружения (не в Git)
-└── manage.py           # Управляющий скрипт Django```
+└── manage.py           # Управляющий скрипт Django
 ```
 
 ## Основные функции

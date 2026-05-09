@@ -12,6 +12,7 @@ python-dotenv = "^1.2.2"
 psycopg2-binary = "^2.9.12"
 psycopg = "^3.3.4"
 psycopg-binary = "^3.3.4"
+gunicorn = "^26.0.0"
 
 
 [build-system]
