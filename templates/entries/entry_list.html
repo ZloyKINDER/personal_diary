@@ -24,7 +24,7 @@
                 <div class="card shadow h-100">
                     <div class="card-body">
                         <h5 class="card-title">{{ entry.title }}</h5>
-                        <p class="card-text text-muted">{{ entry.content|truncatechars:150 }}</p>
+                        <p class="card-text text-muted">{{ entry.content|safe|truncatechars_html:150 }}</p>
                         <small class="text-muted">{{ entry.created_at|date:"d.m.Y H:i" }}</small>
                     </div>
                     <div class="card-footer d-flex justify-content-between">
