@@ -2,23 +2,39 @@
 {% block title %}{{ entry.title }}{% endblock %}
 
 {% block content %}
-<div class="card shadow">
-    <div class="card-body">
-        <h1 class="card-title">{{ entry.title }}</h1>
-        <div class="d-flex justify-content-between text-muted mb-3">
-            <small>Создано: {{ entry.created_at|date:"d.m.Y H:i" }}</small>
-            <small>Обновлено: {{ entry.updated_at|date:"d.m.Y H:i" }}</small>
-        </div>
-        <hr>
-        <div class="content">
-            {{ entry.content|safe }}
-        </div>
-    </div>
-    <div class="card-footer d-flex justify-content-between">
-        <a href="{% url 'entry_list' %}" class="btn btn-outline-secondary">← Назад к списку</a>
-        <div>
-            <a href="{% url 'entry_edit' entry.pk %}" class="btn btn-warning">Редактировать</a>
-            <a href="{% url 'entry_delete' entry.pk %}" class="btn btn-danger">Удалить</a>
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="mb-3">{{ entry.title }}</h1>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="text-muted">
+                        <i class="far fa-calendar-alt me-1"></i>
+                        Создано: {{ entry.created_at|date:"d.m.Y H:i" }}
+                    </div>
+                    <div class="text-muted">
+                        <i class="fas fa-sync-alt me-1"></i>
+                        Обновлено: {{ entry.updated_at|date:"d.m.Y H:i" }}
+                    </div>
+                </div>
+                <hr>
+                <div class="content">
+                    {{ entry.content|safe }}
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a href="{% url 'entry_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>Назад к списку
+                </a>
+                <div>
+                    <a href="{% url 'entry_edit' entry.pk %}" class="btn btn-warning">
+                        <i class="fas fa-edit me-1"></i>Редактировать
+                    </a>
+                    <a href="{% url 'entry_delete' entry.pk %}" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>Удалить
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
