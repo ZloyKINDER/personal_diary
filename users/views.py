@@ -3,6 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 def register_view(request):
+    """
+    Регистрация пользователя
+    """
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():

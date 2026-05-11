@@ -6,6 +6,7 @@ from .forms import EntryForm
 
 @login_required
 def entry_list(request):
+    """Просмотр страницы с записями"""
     query = request.GET.get('q', '')
     entries = Entry.objects.filter(author=request.user)
 
@@ -21,11 +22,13 @@ def entry_list(request):
 
 @login_required
 def entry_detail(request, pk):
+    """Просмотр подробной информации о записи"""
     entry = get_object_or_404(Entry, pk=pk, author=request.user)
     return render(request, 'entries/entry_detail.html', {'entry': entry})
 
 @login_required
 def entry_create(request):
+    """Страница создания записи"""
     if request.method == 'POST':
         form = EntryForm(request.POST)
         if form.is_valid():
@@ -39,6 +42,7 @@ def entry_create(request):
 
 @login_required
 def entry_edit(request, pk):
+    """Страница редактирования записи"""
     entry = get_object_or_404(Entry, pk=pk, author=request.user)
     if request.method == 'POST':
         form = EntryForm(request.POST, instance=entry)
@@ -55,6 +59,7 @@ def entry_edit(request, pk):
 
 @login_required
 def entry_delete(request, pk):
+    """Страница удаления записи"""
     entry = get_object_or_404(Entry, pk=pk, author=request.user)
     if request.method == 'POST':
         entry.delete()
